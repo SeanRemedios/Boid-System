@@ -89,7 +89,7 @@ def update():
 '''
 def draw():
 	global img
-	img = PhotoImage(file="duck.gif")
+	# img = PhotoImage(file="duck.gif")
 	graph.delete(ALL) # Remove and re-add
 	for boid in boids:
 		# These draw the 4 edges - up, down, left and right of each boid
