@@ -14,7 +14,7 @@ WALL 		= 100	# Number of pixels from side
 FORCE_BACK 	= 10	# Acceleration back from the wall when out of bounds
 SPEED_LIMIT = 500	# Boid velocity limit
 
-OFFSET_START = 20		# Pixel start offset from the screen
+START_OFFSET = 20		# Pixel start offset from the screen
 WIND_DIRECTION = 1, 5	# The direction to move the boid flock (Right 1, Down 5)
 
 START_TIME = time.time() 	# Start time of program
@@ -85,6 +85,7 @@ def update():
  ' Draw all the boids to the screen
  '
  ' Input:	None
+ '
  ' Output:	None
 '''
 def draw():
@@ -121,7 +122,7 @@ def draw():
 '''
 def build_boids():
 	global boids
-	boids = tuple(Boid(WIDTH, HEIGHT, OFFSET_START) for boid in range(BOIDS))
+	boids = tuple(Boid(WIDTH, HEIGHT, START_OFFSET) for boid in range(BOIDS))
 
 '''
  ' Move all the boids to new positions on the screen.
@@ -217,10 +218,11 @@ class Boid:
 		# Add any additional velocity rules here
 	
 		# Don't return temp_velocity because it's for each specific boid
+		# and we might not use it if the boid is perching
 		self.temp_velocity = v1 + v2 + v3 + v4
 
 	'''
-	 ' Move the boids as well as add the new velocity to it. Also calls 
+	 ' Move a boid as well as add the new velocity to it. Also calls 
 	 ' the speed limiting function to make sure we don't exceed a specific
 	 ' velocity.
 	 '
@@ -333,7 +335,7 @@ class Boid:
 	'''
 	def bound_position(self):
 		# Ground Level Perching
-		if self.position.y > HEIGHT-BOID_RADIUS:
+		if self.position.y >= HEIGHT-BOID_RADIUS:
 			self.position.y = HEIGHT-7 # 7 so the entire boid is on the screen
 			self.perching = True
 			return # We don't want to adjust their bounding position
